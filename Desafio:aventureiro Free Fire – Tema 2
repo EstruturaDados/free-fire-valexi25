@@ -1,0 +1,56 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define CAPACIDADE_MAX 20 // Capacidade para o vetor
+
+// --- 1. DEFINIÇÃO DAS ESTRUTURAS ---
+
+// Struct de Dados (Comum a ambos)
+typedef struct {
+    char nome[30];
+    char tipo[20];
+    int quantidade;
+} Item;
+
+// Struct do Nó (Exclusivo da Lista Encadeada)
+typedef struct No {
+    Item dado;
+    struct No* proximo;
+} No;
+
+// --- 2. IMPLEMENTAÇÃO: VETOR (Sequencial) ---
+
+void inserirVetor(Item vetor[], int *qtd) {
+    if (*qtd >= CAPACIDADE_MAX) {
+        printf("[ERRO] Mochila (Vetor) cheia!\n");
+        return;
+    }
+    printf("Nome: "); scanf(" %29[^\n]", vetor[*qtd].nome);
+    printf("Tipo: "); scanf(" %19[^\n]", vetor[*qtd].tipo);
+    printf("Qtd: "); scanf("%d", &vetor[*qtd].quantidade);
+    (*qtd)++;
+    printf("Item inserido no vetor.\n");
+}
+
+void removerVetor(Item vetor[], int *qtd, char* nomeBusca) {
+    int i, j, encontrado = 0;
+    for(i = 0; i < *qtd; i++) {
+        if(strcmp(vetor[i].nome, nomeBusca) == 0) {
+            // Deslocamento para esquerda (Shift left)
+            for(j = i; j < *qtd - 1; j++) {
+                vetor[j] = vetor[j+1];
+            }
+            (*qtd)--;
+            encontrado = 1;
+            printf("Item removido do vetor.\n");
+            break;
+        }
+    }
+    if(!encontrado) printf("Item nao encontrado no vetor.\n");
+}
+
+void listarVetor(Item vetor[], int qtd) {
+    printf("\n--- VETOR [%d itens] ---\n", qtd);
+    for(int i = 0; i < qtd; i++) {
+        printf("%d. %s (%s) - Qtd: %d\n", i+1,
